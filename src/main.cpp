@@ -73,14 +73,24 @@ int main(int argc, char *argv[]) {
 
 	SDL_RenderClear(renderer);
 	SDL_RenderPresent(renderer);
+	SDL_Surface *screenSurface, *nodeSurface;
 
+	nodeSurface = SDL_LoadBMP("../res/black.bmp");
+	if (!nodeSurface) {
+		std::cout << SDL_GetError();
+		return 1;
+	}
 
+	screenSurface = SDL_GetWindowSurface(window);
+	SDL_BlitSurface(nodeSurface, NULL, screenSurface, NULL);
+	
 	TTF_Font* arial = TTF_OpenFont("../res/arial.ttf", 200);
 
 	if (!arial) {
-		std::cout << "this part" << TTF_GetError() << std::endl;
+		std::cout << TTF_GetError() << std::endl;
 		return 1;
 	}
+	
 	SDL_Event evnt;
 	while (!quit) {
 		
@@ -108,6 +118,7 @@ int main(int argc, char *argv[]) {
 			case SDL_KEYDOWN:
 				if (evnt.key.keysym.sym == SDLK_SPACE) {
 					addPoint(Points);
+					SDL_UpdateWindowSurface(window);
 					break;
 				}
 			}
