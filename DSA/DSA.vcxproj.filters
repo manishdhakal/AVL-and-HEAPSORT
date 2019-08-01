@@ -23,13 +23,27 @@
     <Font Include="..\res\arial.ttf">
       <Filter>Resource Files</Filter>
     </Font>
+    <Font Include="..\res\Xenotron.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="..\res\aller.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\text_render.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\draw_line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\res\black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

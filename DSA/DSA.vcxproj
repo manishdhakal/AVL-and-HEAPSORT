@@ -148,11 +148,17 @@
     <ClCompile Include="..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Font Include="..\res\aller.ttf" />
     <Font Include="..\res\arial.ttf" />
+    <Font Include="..\res\Xenotron.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\draw_line.h" />
-    <ClInclude Include="..\src\text_render.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\render.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\res\black.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
