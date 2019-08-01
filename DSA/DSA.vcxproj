@@ -129,6 +129,10 @@
   <ItemGroup>
     <Font Include="..\res\arial.ttf" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\draw_line.h" />
+    <ClInclude Include="..\src\text_render.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

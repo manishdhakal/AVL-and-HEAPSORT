@@ -2,24 +2,66 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "text_render.h"
+#include <vector>
+#include <cmath>
+#include "draw_line.h"
+
+#define W 1536
+#define H 864
+//#define W SCREEN_WIDTH 
+//#define H SCREEN_HEIGHT
+
+
+void addPoint(std::vector<SDL_Point>& Points) {
+	int treeHeight = getheight(Points.size()+1);
+	int newIndex = Points.size(), parIndex;
+
+	SDL_Point New;
+	New.y = 100 *( treeHeight +1);
+	if (newIndex % 2 == 0){
+		parIndex = newIndex / 2 -1;
+		New.x = Points[parIndex].x + W / (int)pow(2, treeHeight + 1);
+		
+	}
+	else{
+		parIndex = newIndex / 2;
+		New.x = Points[parIndex].x - W / (int)pow(2, treeHeight + 1);
+		
+	}
+	Points.push_back(New);
+}
+
 
 int main(int argc, char *argv[]) {
 
-	SDL_Window *window;                    // Declare a pointer
+	SDL_Window *window; 
+	SDL_DisplayMode DM;
+	std::vector<SDL_Point> Points(1);
+	Points[0].x = W / 2;
+	Points[0].y = 100;
+	addPoint(Points);
+
 	bool quit = false;
 	SDL_Init(SDL_INIT_VIDEO);              // Initialize SDL2
+
+	SDL_GetCurrentDisplayMode(0, &DM);
+	const int SCREEN_WIDTH = DM.w;
+	const int SCREEN_HEIGHT = DM.h;
+	
+	std::cout << W << "  " << H <<'\n' ;
 	TTF_Init();
-	// Create an application window with the following settings:
+
+
 	window = SDL_CreateWindow(
-		"DSA",                  // window title
-		SDL_WINDOWPOS_UNDEFINED,           // initial x position
-		SDL_WINDOWPOS_UNDEFINED,           // initial y position
-		640,                               // width, in pixels
-		480,                               // height, in pixels
+		"DSA",                 
+		SDL_WINDOWPOS_UNDEFINED,           
+		SDL_WINDOWPOS_UNDEFINED,          
+		SCREEN_WIDTH,                               // width, in pixels
+		SCREEN_HEIGHT-60,                               // height, in pixels
 		SDL_WINDOW_OPENGL                  // flags - see below
 	);
 
-	// Check that the window was successfully created
 	if (window == NULL) {
 		// In the case that the window could not be made...
 		printf("Could not create window: %s\n", SDL_GetError());
@@ -27,53 +69,55 @@ int main(int argc, char *argv[]) {
 	}
 	SDL_Renderer* renderer;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-	// Clear the entire screen to our selected color.
 	SDL_RenderClear(renderer);
-
-	// Up until now everything was drawn behind the scenes.
-	// This will show the new, red contents of the window.
 	SDL_RenderPresent(renderer);
 
-	TTF_Font* Sans = TTF_OpenFont("../res/arial.ttf", 200);
 
-	if (!Sans) {
-		std::cout << TTF_GetError() << std::endl;
+	TTF_Font* arial = TTF_OpenFont("../res/arial.ttf", 200);
+
+	if (!arial) {
+		std::cout << "this part" << TTF_GetError() << std::endl;
 		return 1;
 	}
-	SDL_Color _color = { 0,0, 0 };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
-
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "manish", _color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
-	SDL_FreeSurface(surfaceMessage);
-
-	SDL_Rect Message_rect; //create a rect
-	Message_rect.x = 100; //controls the rect's x coordinate 
-	Message_rect.y = 100; // controls the rect's y coordinte
-	Message_rect.w = 100; // controls the width of the rect
-	Message_rect.h = 100; // controls the height of the rect
-
-
-	SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
 	SDL_Event evnt;
 	while (!quit) {
+		
+		
+		SDL_Color _color = {255,255,255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
-		//you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your textu
+		SDL_Rect Message_rect; //create a rect
+		Message_rect.x = 100; //controls the rect's x coordinate 
+		Message_rect.y = 100; // controls the rect's y coordinte
+		Message_rect.w = 100; // controls the width of the rect
+		Message_rect.h = 100; // controls the height of the rect
 
 
-		while (SDL_PollEvent(&evnt)){
-			if (evnt.type == SDL_QUIT)
+		renderText(renderer, "mansih", _color, Message_rect, arial);
+
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+		drawLines(renderer, Points);
+
+		while (SDL_PollEvent(&evnt)) {
+			
+			switch (evnt.type) {
+			case SDL_QUIT:
 				quit = true;
+				break;
+			case SDL_KEYDOWN:
+				if (evnt.key.keysym.sym == SDLK_SPACE) {
+					addPoint(Points);
+					break;
+				}
+			}
+			break;
 		}
 	}
 
-	// Close and destroy the window
-	SDL_DestroyWindow(window);
-	TTF_CloseFont(Sans);
+	TTF_CloseFont(arial);
 	TTF_Quit();
+	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return 0;
 }
