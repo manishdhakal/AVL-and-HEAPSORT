@@ -7,6 +7,7 @@
 #include <vector>
 #include "draw_line.h"
 
+
 void renderText(SDL_Renderer* renderer, std::string text, SDL_Color _color, SDL_Rect Message_rect,TTF_Font* font){
 
 	SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), _color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first

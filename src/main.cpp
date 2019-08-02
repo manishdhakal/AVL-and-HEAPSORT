@@ -9,37 +9,6 @@
 #include "node.h"
 
 
-void addNode(std::vector<node>& nodes, int W, int H) {
-	int treeHeight = getheight(nodes.size()+1);
-	int newIndex = nodes.size(), parIndex;
-	int last = nodes.size() - 1;
-	node New;
-	New.nodeCoord.y = 75 *treeHeight +200;
-	New.arrRect.h = 50;
-	New.arrRect.w = 50;
-	
-	if (nodes.size() == 27) {
-		New.arrRect.x = 50;
-		New.arrRect.y = nodes[last].arrRect.y + 50;
-	}
-	else {
-		New.arrRect.x = nodes[last].arrRect.x + 50;
-		New.arrRect.y = nodes[last].arrRect.y;
-	}
-		if (newIndex % 2 == 0){
-		parIndex = newIndex / 2 -1;
-		New.nodeCoord.x = nodes[parIndex].nodeCoord.x + W / (int)pow(2, treeHeight + 1);
-		
-	}
-	else{
-		parIndex = newIndex / 2;
-		New.nodeCoord.x = nodes[parIndex].nodeCoord.x - W / (int)pow(2, treeHeight + 1);
-		
-	}
-	nodes.push_back(New);
-}
-
-
 int main(int argc, char *argv[]) {
 
 	
@@ -57,8 +26,6 @@ int main(int argc, char *argv[]) {
 
 	std::vector<node> Nodes;
 	std::cout << Nodes.size() << std::endl;
-	
-
 	
 	TTF_Init();
 
@@ -110,7 +77,7 @@ int main(int argc, char *argv[]) {
 					if (Nodes.size() == 0) {
 						node New;
 						New.nodeCoord.x = W / 2;
-						New.nodeCoord.y = 200;
+						New.nodeCoord.y = 400;
 						New.arrRect.x = 50;
 						New.arrRect.y = 50;
 						New.arrRect.h = 50;

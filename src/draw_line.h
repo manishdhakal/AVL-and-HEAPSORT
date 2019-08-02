@@ -3,18 +3,6 @@
 #include <SDL.h>
 #include "node.h"
 
-int getheight(int numOfNodes) {
-	int h = 0, subtrahend = 1;
-	while (1) {
-		numOfNodes -= subtrahend;
-		if (numOfNodes <= 0) {
-			return h;
-		}
-		++h;
-		subtrahend *= 2;
-	}
-}
-
 void drawLine(SDL_Renderer* renderer, SDL_Point A, SDL_Point B) {
 	
 	SDL_RenderDrawLine(renderer, A.x, A.y, B.x, B.y);
