@@ -17,10 +17,16 @@ void addNode(std::vector<node>& nodes, int W, int H) {
 	New.nodeCoord.y = 75 *treeHeight +200;
 	New.arrRect.h = 50;
 	New.arrRect.w = 50;
-	New.arrRect.x = nodes[last - 1].arrRect.x + 50;
-	New.arrRect.y = nodes[last - 1].arrRect.y + 50;
-
-	if (newIndex % 2 == 0){
+	
+	if (nodes.size() == 27) {
+		New.arrRect.x = 50;
+		New.arrRect.y = nodes[last].arrRect.y + 50;
+	}
+	else {
+		New.arrRect.x = nodes[last].arrRect.x + 50;
+		New.arrRect.y = nodes[last].arrRect.y;
+	}
+		if (newIndex % 2 == 0){
 		parIndex = newIndex / 2 -1;
 		New.nodeCoord.x = nodes[parIndex].nodeCoord.x + W / (int)pow(2, treeHeight + 1);
 		
@@ -76,36 +82,15 @@ int main(int argc, char *argv[]) {
 	SDL_SetRenderDrawColor(renderer, 169, 169, 169, 255);
 
 	SDL_RenderClear(renderer);
-<<<<<<< HEAD
-	
 
 	TTF_Font* arial = TTF_OpenFont("../res/aller.ttf",500);
-=======
-	SDL_RenderPresent(renderer);
-	SDL_Surface *screenSurface, *nodeSurface;
-
-	nodeSurface = SDL_LoadBMP("../res/black.bmp");
-	if (!nodeSurface) {
-		std::cout << SDL_GetError();
-		return 1;
-	}
-
-	screenSurface = SDL_GetWindowSurface(window);
-	SDL_BlitSurface(nodeSurface, NULL, screenSurface, NULL);
-	
-	TTF_Font* arial = TTF_OpenFont("../res/arial.ttf", 200);
->>>>>>> 930c766cb0f54711f00656d9ee83b87aaee220cf
 
 	if (!arial) {
 		std::cout << TTF_GetError() << std::endl;
 		return 1;
 	}
-<<<<<<< HEAD
-	SDL_UpdateWindowSurface(window);
 
-=======
-	
->>>>>>> 930c766cb0f54711f00656d9ee83b87aaee220cf
+
 	SDL_Event evnt;
 	while (!quit) {
 		
@@ -122,7 +107,6 @@ int main(int argc, char *argv[]) {
 				
 			case SDL_KEYDOWN:
 				if (evnt.key.keysym.sym == SDLK_SPACE) {
-<<<<<<< HEAD
 					if (Nodes.size() == 0) {
 						node New;
 						New.nodeCoord.x = W / 2;
@@ -135,11 +119,7 @@ int main(int argc, char *argv[]) {
 					}
 					else
 						addNode(Nodes, W, H);	
-=======
-					addPoint(Points);
-					SDL_UpdateWindowSurface(window);
-					break;
->>>>>>> 930c766cb0f54711f00656d9ee83b87aaee220cf
+
 				}
 			}
 		}

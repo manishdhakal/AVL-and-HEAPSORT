@@ -20,6 +20,7 @@ void renderText(SDL_Renderer* renderer, std::string text, SDL_Color _color, SDL_
 
 void renderNodes(SDL_Renderer* renderer, const std::vector<node> Nodes, TTF_Font* font) {
 	for (int i = 0; i < Nodes.size(); ++i){
+
 		SDL_Surface *nodeSurface;
 		SDL_Texture * nodeTexture;
 		nodeSurface = SDL_LoadBMP("../res/black.bmp");
