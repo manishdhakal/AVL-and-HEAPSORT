@@ -3,8 +3,8 @@
 #include <SDL.h>
 #include "node.h"
 
-void drawLine(SDL_Renderer* renderer, SDL_Point A, SDL_Point B) {
-	
+void drawLine(SDL_Renderer* renderer, SDL_Point A, SDL_Point B, SDL_Color color = {0,0,0}) {
+	SDL_SetRenderDrawColor(renderer, color.r , color.g, color.b, 255);
 	SDL_RenderDrawLine(renderer, A.x, A.y, B.x, B.y);
 }
 void drawLines(SDL_Renderer* renderer, const std::vector<node>& Nodes) {

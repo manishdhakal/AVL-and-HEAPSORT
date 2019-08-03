@@ -22,7 +22,7 @@ int getheight(int numOfNodes) {
 	}
 }
 
-void addNode(std::vector<node>& nodes, int W, int H) {
+void addNode(std::vector<node>& nodes,int value, int W, int H) {
 	int treeHeight = getheight(nodes.size() + 1);
 	int newIndex = nodes.size(), parIndex;
 	int last = nodes.size() - 1;
@@ -31,7 +31,7 @@ void addNode(std::vector<node>& nodes, int W, int H) {
 	New.arrRect.h = 50;
 	New.arrRect.w = 50;
 
-	if (nodes.size() == 27) {
+	if (nodes.size() == 12) {
 		New.arrRect.x = 50;
 		New.arrRect.y = nodes[last].arrRect.y + 50;
 	}
@@ -49,5 +49,6 @@ void addNode(std::vector<node>& nodes, int W, int H) {
 		New.nodeCoord.x = nodes[parIndex].nodeCoord.x - W / (int)pow(2, treeHeight + 1);
 
 	}
+	New.value = value;
 	nodes.push_back(New);
 }

@@ -38,7 +38,7 @@ void renderNodes(SDL_Renderer* renderer, const std::vector<node> Nodes, TTF_Font
 		SDL_DestroyTexture(nodeTexture);
 		
 		
-		std::string val = std::to_string(i);
+		std::string val = std::to_string(Nodes[i].value);
 		SDL_Color white = { 255,255,255 }, black = {0,0,0};
 		SDL_Rect textRect = { Nodes[i].nodeCoord.x - 18, Nodes[i].nodeCoord.y - 20, 30, 30 };
 		SDL_Rect arrTextRect = { Nodes[i].arrRect.x + 10, Nodes[i].arrRect.y + 10, 30, 30 };
@@ -47,5 +47,10 @@ void renderNodes(SDL_Renderer* renderer, const std::vector<node> Nodes, TTF_Font
 		drawRect(renderer, Nodes[i].arrRect);
 		
 	}
+}
+void renderInputBox(SDL_Renderer* renderer, SDL_Rect rect) {
+	SDL_RenderDrawRect(renderer, &rect);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // the rect color (solid red) 
+	SDL_RenderFillRect(renderer, &rect);
 }
 
