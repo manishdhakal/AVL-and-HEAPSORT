@@ -32,7 +32,7 @@ void addNode(std::vector<node>& nodes,int value, int W, int H) {
 	New.arrRect.w = 50;
 
 	if (nodes.size() == 12) {
-		New.arrRect.x = 50;
+		New.arrRect.x = W / 2;
 		New.arrRect.y = nodes[last].arrRect.y + 50;
 	}
 	else {
