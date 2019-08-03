@@ -50,7 +50,7 @@ void renderNodes(SDL_Renderer* renderer, const std::vector<node> Nodes, TTF_Font
 }
 void renderInputBox(SDL_Renderer* renderer, SDL_Rect rect) {
 	SDL_RenderDrawRect(renderer, &rect);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // the rect color (solid red) 
+	SDL_SetRenderDrawColor(renderer, 255, 0 , 255, 255); // the rect color (solid red) 
 	SDL_RenderFillRect(renderer, &rect);
 }
 

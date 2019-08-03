@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 
 	bool isQuit = false, gotNumData = false, allDataGiven = false;
 	int numData;
-	std::string numDatr_str;
+	std::string numData_str;
 
 	SDL_Init(SDL_INIT_VIDEO);
 
@@ -209,8 +209,8 @@ int main(int argc, char *argv[]) {
 				int y = evnt.button.y;
 				if (clickedBox({x,y}, textInputRect)) {
 					if (!gotNumData) {
-						getInput(renderer, numDatr_str, isQuit, textInputRect, buttonRect);
-						numData = std::stoi(numDatr_str);
+						getInput(renderer, numData_str, isQuit, textInputRect, buttonRect);
+						numData = std::stoi(numData_str);
 						gotNumData = true;
 					}
 					
