@@ -7,25 +7,14 @@ void drawLine(SDL_Renderer* renderer, SDL_Point A, SDL_Point B, SDL_Color color 
 	SDL_SetRenderDrawColor(renderer, color.r , color.g, color.b, 255);
 	SDL_RenderDrawLine(renderer, A.x, A.y, B.x, B.y);
 }
-void drawLines(SDL_Renderer* renderer, const std::vector<node>& Nodes) {
-	int lastParent = Nodes.size() / 2 - 1;
+void drawLines(SDL_Renderer* renderer, const std::vector<node>& Nodes, int numOfPoints) {
+	int lastParent = numOfPoints / 2 - 1;
 
 	for (int i = 0; i <= lastParent; ++i) {
 		drawLine(renderer, Nodes[i].nodeCoord, Nodes[2 * i + 1].nodeCoord);
-		if (i == lastParent && 2 * (i + 1) == Nodes.size())
+		if (i == lastParent && 2 * (i + 1) == numOfPoints)
 			return;
 		drawLine(renderer, Nodes[i].nodeCoord, Nodes[2 * (i+1)].nodeCoord);
 	}
 }
 
-void drawRect(SDL_Renderer* renderer, SDL_Rect r) {
-	SDL_Point A, B, C,D;
-	A = { r.x,r.y };
-	B = { r.x + r.w,r.y };
-	C = { r.x + r.w,r.y + r.h };
-	D = { r.x, r.y + r.h };
-	drawLine(renderer, A, B);
-	drawLine(renderer, B, C);
-	drawLine(renderer, C, D);
-	drawLine(renderer, D, A);
-}
