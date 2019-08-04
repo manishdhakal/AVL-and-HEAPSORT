@@ -73,7 +73,6 @@ void clearScreen(SDL_Renderer* renderer) {
 
 	SDL_SetRenderDrawColor(renderer, 169, 169, 169, 255);
 	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
 
 }
 

@@ -54,6 +54,7 @@ void getInput(SDL_Renderer* renderer ,std::string& inputText, bool& isQuit, SDL_
 				int ascii =  int(evnt.text.text[0]);
 				if( ascii > 47 && ascii < 58 && inputText.size() < 3)
 					inputText += evnt.text.text;
+				renderInputBox(renderer, inputBoxRect);
 				std::cout << inputText << std::endl;
 			}
 		}
@@ -62,9 +63,6 @@ void getInput(SDL_Renderer* renderer ,std::string& inputText, bool& isQuit, SDL_
 		
 		renderText(renderer, inputText, black, textRect, arial);
 
-		for(int i = 0; i < inputText.size(); ++i) { 
-			drawLine(renderer, { inputBoxRect.x + 3 + i * 25 , inputBoxRect.y+3 }, { inputBoxRect.x + 3 + i * 25 , inputBoxRect.y+27 }, {255,255,255});
-		}
 		if (duration <= 300) {
 			
 			drawLine(renderer, { inputBoxRect.x + 3 + (int)(inputText.size()) * 25 , inputBoxRect.y + 3 }, { inputBoxRect.x + 3 + (int)(inputText.size()) * 25 , inputBoxRect.y + 27 });
@@ -100,26 +98,25 @@ void heapSort(std::vector<node>& Nodes,SDL_Renderer* renderer, TTF_Font* font)
 			renderParticularNode(renderer, Nodes[son], font, 1);
 			renderParticularNode(renderer, Nodes[parent], font, 1);
 			SDL_RenderPresent(renderer);
-			SDL_Delay(2000);
+			SDL_Delay(1000);
 			Nodes[son].value = Nodes[parent].value;
 			son = parent;
 			parent = (son - 1) / 2;
 			
 		}
 		Nodes[son].value = elt;
-		clearScreen(renderer);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 		drawLines(renderer, Nodes, Nodes.size());
 		renderNodes(renderer, Nodes, font, Nodes.size());
 		SDL_RenderPresent(renderer);
-		SDL_Delay(2000);
+		SDL_Delay(1000);
 
 	}
 	//take out max
 	for (int i = n - 1; i > 0; i--)
 	{
 		renderParticularNode(renderer, Nodes[0], font, 0);
-		SDL_Delay(2000);
+		SDL_Delay(1000);
 
 		ivalue = Nodes[i].value;
 		Nodes[i].value = Nodes[0].value;
@@ -153,7 +150,7 @@ void heapSort(std::vector<node>& Nodes,SDL_Renderer* renderer, TTF_Font* font)
 		renderNodes(renderer, Nodes, font, i);
 		drawArrRects(renderer, Nodes, font, n, i);
 		SDL_RenderPresent(renderer);
-		SDL_Delay(2000);
+		SDL_Delay(1000);
 	}
 	clearScreen(renderer);
 	drawArrRects(renderer, Nodes, font, n);
@@ -164,10 +161,10 @@ int main(int argc, char *argv[]) {
 	SDL_Window *window;
 	SDL_Renderer* renderer;
 	SDL_DisplayMode DM;
-	SDL_Color textColor = {0,0,0};
+	SDL_Color textColor = { 0,0,0 };
 	std::string inputText = "";
 
-	bool isQuit = false, gotNumData = false, allDataGiven = false,isHeapSorted = false;
+	bool isQuit = false, gotNumData = false, allDataGiven = false, isHeapSorted = false;
 	int numData;
 	std::string numData_str;
 
@@ -179,15 +176,15 @@ int main(int argc, char *argv[]) {
 
 	std::vector<node> Nodes;
 	std::cout << Nodes.size() << std::endl;
-	
+
 	TTF_Init();
 
 	window = SDL_CreateWindow(
-		"DSA",                 
-		SDL_WINDOWPOS_UNDEFINED,           
-		SDL_WINDOWPOS_UNDEFINED,          
+		"HEAPSORT",
+		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED,
 		W,									// width, in pixels
-		H-60,                               // height, in pixels
+		H - 60,                               // height, in pixels
 		SDL_WINDOW_OPENGL                   // flags - see below
 	);
 
@@ -195,47 +192,50 @@ int main(int argc, char *argv[]) {
 		printf("Could not create window: %s\n", SDL_GetError());
 		return 1;
 	}
-	
-	
+
+
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_SetRenderDrawColor(renderer, 169, 169, 169, 255);
 
 	SDL_RenderClear(renderer);
 
-	TTF_Font* aller = TTF_OpenFont("../res/aller.ttf",500);
+	TTF_Font* aller = TTF_OpenFont("../res/aller.ttf", 500);
 	TTF_Font* arial = TTF_OpenFont("../res/arial.ttf", 500);
 	if (!aller) {
 		std::cout << TTF_GetError() << std::endl;
 		return 1;
 	}
-
-	SDL_Rect textInputRect, buttonRect, patchRect;
-	textInputRect.x = 50;
-	textInputRect.y = 100;
-	textInputRect.w = 100;
-	textInputRect.h = 32;
-
-	buttonRect = { 200,100,150,32 };
+	std::string textInfo[] = { "Number of data:","Now, enter unordered data:" };
+	SDL_Rect textInputRect, buttonRect, patchRect, textInfoRect[2];
+	textInputRect = {50,100, 100, 32};
+	buttonRect = { 200,100,50,32 };
 	patchRect = { 45, 95, 500,40 };
+	
+	for (int i = 0; i<2; ++i)
+		textInfoRect[i] = {50,50,int(textInfo[i].size()) * 10,30};
+	
 	int count = 0;
 
 	SDL_Event evnt;
 	while (!isQuit) {
 		if (!allDataGiven) {
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-			SDL_RenderDrawRect(renderer, &buttonRect);
-
 			SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
 			SDL_RenderFillRect(renderer, &buttonRect);
 
-			
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+			SDL_RenderDrawRect(renderer, &buttonRect);
 
 			if (!gotNumData) {
-				renderText(renderer, "OK", { 0,0,0 }, { buttonRect.x + 5 , buttonRect.y + 5, buttonRect.w - 50, buttonRect.h - 10 }, arial);
+				renderText(renderer, textInfo[0], { 0,0,0 }, textInfoRect[0], arial);
+				renderText(renderer, "Enter", { 0,0,0 }, { buttonRect.x + 5 , buttonRect.y + 5, 40, buttonRect.h - 10 }, arial);
+				
 			}
 			else
 			{
-				renderText(renderer, "Next", { 0,0,0 }, { buttonRect.x + 5 , buttonRect.y + 5, buttonRect.w - 15, buttonRect.h - 10 }, arial);
+				SDL_SetRenderDrawColor(renderer, 169, 169, 169, SDL_ALPHA_OPAQUE);
+				SDL_RenderFillRect(renderer, &textInfoRect[0]);
+				renderText(renderer, textInfo[1], { 0,0,0 }, textInfoRect[1], arial);
+				renderText(renderer, "Next", { 0,0,0 }, { buttonRect.x + 5 , buttonRect.y + 5, 40, buttonRect.h - 10 }, arial);
 			}
 
 			renderInputBox(renderer, textInputRect);
