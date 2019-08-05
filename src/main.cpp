@@ -15,7 +15,7 @@ bool clickedBox(SDL_Point p, SDL_Rect rect) {
 	return (p.x > rect.x && p.x < rect.x + rect.w && p.y > rect.y && p.y < rect.y + rect.h);
 }
 
-void getInput(SDL_Renderer* renderer ,std::string& inputText, bool& isQuit, SDL_Rect inputBoxRect, SDL_Rect buttonRect) {
+void getInput(SDL_Renderer* renderer ,std::string& inputText, bool& isQuit, SDL_Rect inputBoxRect, SDL_Rect buttonRect, bool gotNumData) {
 	inputText = "";
 	SDL_Event evnt;
 	TTF_Font* arial = TTF_OpenFont("../res/arial.ttf", 3000);
@@ -52,7 +52,9 @@ void getInput(SDL_Renderer* renderer ,std::string& inputText, bool& isQuit, SDL_
 
 			if (evnt.type == SDL_TEXTINPUT) {
 				int ascii =  int(evnt.text.text[0]);
-				if( ascii > 47 && ascii < 58 && inputText.size() < 3)
+				if( (ascii > 47 && ascii < 58 && inputText.size() < 3)) 
+					inputText += evnt.text.text;
+				if(inputText == "" && ascii == 45 && gotNumData)
 					inputText += evnt.text.text;
 				renderInputBox(renderer, inputBoxRect);
 				std::cout << inputText << std::endl;
@@ -218,6 +220,7 @@ int main(int argc, char *argv[]) {
 
 	SDL_Event evnt;
 	while (!isQuit) {
+		
 		if (!allDataGiven) {
 			SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
 			SDL_RenderFillRect(renderer, &buttonRect);
@@ -241,7 +244,7 @@ int main(int argc, char *argv[]) {
 			renderInputBox(renderer, textInputRect);
 			if (gotNumData) {
 				if (count < numData) {
-					getInput(renderer, inputText, isQuit, textInputRect, buttonRect);
+					getInput(renderer, inputText, isQuit, textInputRect, buttonRect, gotNumData);
 					if (inputText != "")
 					{
 						if (Nodes.size() == 0) {
@@ -260,6 +263,7 @@ int main(int argc, char *argv[]) {
 							addNode(Nodes, std::stoi(inputText), W, H);
 						++count;
 					}
+					
 				}
 				else
 					allDataGiven = true;
@@ -291,7 +295,7 @@ int main(int argc, char *argv[]) {
 					int y = evnt.button.y;
 					if (clickedBox({ x,y }, textInputRect)) {
 						if (!gotNumData) {
-							getInput(renderer, numData_str, isQuit, textInputRect, buttonRect);
+							getInput(renderer, numData_str, isQuit, textInputRect, buttonRect, gotNumData);
 							if (numData_str != "")
 								numData = std::stoi(numData_str);
 							gotNumData = true;

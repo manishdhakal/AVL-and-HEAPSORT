@@ -1,8 +1,6 @@
 #pragma once
 #include <SDL.h>
 #include <vector>
-
-
 struct node {
 	SDL_Point nodeCoord;
 	SDL_Rect arrRect;
